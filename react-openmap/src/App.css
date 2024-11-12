@@ -1,0 +1,51 @@
+* {padding: 0; margin: 0;}
+.App { 
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.header {
+  height: 50px;
+  line-height: 50px;
+  padding-left: 20px;
+  background-color: #263238;
+  color: #fff;
+}
+.gis-wrap {
+  display: flex;
+  min-height: calc(100vh - 50px); /* 전체 높이 - 헤더높이 */
+}
+.gis-wrap > .item-left {
+  flex: 0 0 300px;
+  background-color: #263238;
+  overflow-y: auto;
+
+}
+.gis-wrap > .item-left > .rider-item {
+
+}
+.gis-wrap > .item-left > .rider-item > a {
+  display: block;
+  padding: 10px 20px;
+  margin: 10px 0;
+  background-color: #263238; /* 배경색 */
+  color: #FFFFFF; /* 텍스트 색상 */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.rider-item a:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+  transform: translateY(-2px);
+}
+.rider-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
+.gis-wrap > .item-right {
+  flex: 1; /* 남은 영역을 으로 채움 */
+}
