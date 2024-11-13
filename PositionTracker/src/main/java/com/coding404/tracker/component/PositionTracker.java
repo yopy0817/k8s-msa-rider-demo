@@ -9,11 +9,15 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Log4j2
 @Component
 public class PositionTracker {
+
+    private List<VehicleDTO> list = new ArrayList<>();
 
     @Autowired
     private PositionService positionService;
@@ -23,7 +27,7 @@ public class PositionTracker {
     @RabbitListener(queues = "${position.queue}")
     public void receiveMessage(Map<String, String> map) {
         log.info(map.toString());
-
+        
         //레빗큐에서 넘어온 데이터 DTO로 받음
         VehicleDTO dto = VehicleDTO.builder()
                 .name( map.get("vehicle"))

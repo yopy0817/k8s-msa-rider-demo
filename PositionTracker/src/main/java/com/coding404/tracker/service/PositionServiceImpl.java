@@ -8,6 +8,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PositionServiceImpl implements PositionService {
@@ -17,9 +18,15 @@ public class PositionServiceImpl implements PositionService {
 
     @Override
     public void updatePosition(VehicleDTO dto) {
-        //positionRepository.save(dto.convertEntity()); //엔티티로 변경하여 insert
+        //엔티티로 변경하여 insert
+        //positionRepository.save(dto.convertEntity());
+        //리스트<엔티티> 모형으로 insertAll
+        //List<Vehicle> result = list.stream().map( item -> item.convertEntity() ).collect(Collectors.toList());
+        //positionRepository.saveAll(result);
+
         //서버 재시작시 데이터가 지워지므로 data.sql 생성
         positionRepository.updatePosition(dto.convertEntity());
+
     }
 
     @Override

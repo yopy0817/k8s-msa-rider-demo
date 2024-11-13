@@ -49,7 +49,7 @@ public class Rider implements Callable<Object> {
 
             sendMessage(map); //메시지큐에 전송
 
-            //순방향 vs 역방향
+            //순방향 else 역방향
             if(forward) {
                 index++;
                 if(index == position.size() - 1) forward = false;
@@ -58,8 +58,7 @@ public class Rider implements Callable<Object> {
                 if(index == 0) forward = true;
             }
             //딜레이
-            delay( Math.random() * 10000 + 2000 );
-
+            delay( Math.random() * 10000 + 10000 ); //10~20초 사이로 딜레이
         }
     }
 
@@ -74,7 +73,7 @@ public class Rider implements Callable<Object> {
                 log.info("queue send success");
 
             } catch (Exception e) {
-                log.info("queue send fail");
+                log.info("큐 전송 실패 5초후 재시도 합니다.");
                 delay(5000); //전송 실패시 5초 후에 재시도 합니다.
                 e.printStackTrace();
             }
