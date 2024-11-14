@@ -1,4 +1,4 @@
-import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet'
+import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet'
 
 import './App.css';
 import { useEffect, useRef, useState } from 'react';
@@ -32,7 +32,8 @@ function App() {
   const popupRef = useRef([]); 
   //step.6 ~ 7
   const moveMap = (value, index) => {
-    map.flyTo([value.lat, value.lng], 12) //map.setView([item.lat, item.lng], 12)
+    //map.setView([value.lat, value.lng], 12)
+    map.flyTo([value.lat, value.lng], 14) 
     popupRef.current[index].openOn(); //팝업창 띄우기
   }
   //step.1 - 맵 데이터 가져오기
@@ -51,8 +52,8 @@ function App() {
         console.log(e, '서버에 데이터 수신에 문제가 있습니다. 연결을 재시도 합니다.');
         setLoading(true) //애니메이션 변경
       }
-
-    }, 5000)
+      
+    }, 5000);
     
     return () => {
       clearInterval(mapInterval); //리렌더링 시 인터벌종료
@@ -71,10 +72,13 @@ function App() {
   </li>
   )
 
-  //step.3 - 라이더 마커
+  //step.3 - 라이더 마커 
+  //autoPan(팝업이 지도의 현재 화면에 완전히 보이지 않을 경우, 팝업이 보이도록 지도를 자동으로 이동시킴)
+  //keepInView(팝업이 지도 밖으로 벗어나지 않도록 지도를 이동시키는 옵션)
+  //마커가 화면에서 벗어나면, 마커를 지도에 띄우려고 자동이동하는데, 막는 속성이 autoPan={false} keepInView={false}
   const riderMackerList = riders.map( (value, index) =>
-    <Marker position={[value.lat, value.lng]} key={index}>
-      <Popup ref={(tag) => popupRef.current[index] = tag }>
+    <Marker position={[value.lat, value.lng]} key={index} >
+      <Popup ref={(tag) => popupRef.current[index] = tag } autoPan={false} keepInView={false}>
         {value.name}<br/>
         {value.lat} {value.lng}
       </Popup>
