@@ -8,8 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,13 +76,13 @@ public class PositionSimulator implements Runnable {
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
         try {
-            Resource[] resources = resolver.getResources("rider/*");
+            Resource[] resources = resolver.getResources("classpath:/rider/*");
 
             for(Resource resource : resources ) { //리소스 파일을 가져와서 반복문
 
                 List<String> list = new ArrayList<>(); //위치 저장 리스트
                 String vehicleName = resource.getFilename().replace(".txt", ""); //파일명
-                BufferedReader br = new BufferedReader(new FileReader(resource.getFile()));
+				BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 
                 String str = null;
                 while( (str =  br.readLine() ) != null ) { //한줄씩 읽어서 저장

@@ -1,4 +1,4 @@
-import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet'
+import { MapContainer, Marker, Popup, TileLayer} from 'react-leaflet'
 
 import './App.css';
 import { useEffect, useRef, useState } from 'react';
@@ -6,8 +6,17 @@ import { useEffect, useRef, useState } from 'react';
 import Lottie from 'lottie-react'; //로티
 import riderAnim from './anim/rider-anim.json' //로티 에님
 
-function App() {
+/*
+실행 모드별 .env 로딩 규칙 (2025/03/13 현재 사용하지 않음)
+import config from "./config";
+{config.mode}
+{config.apiUrl}
 
+npm start	  -> .env.development
+npm run build -> .env.production
+npm test 	  -> .env.test
+*/
+function App() {
   /*
   npm create react-app react-openmap
 
@@ -42,14 +51,15 @@ function App() {
     const mapInterval = window.setInterval( async () => {
      
       try {
-        //var result = await fetch('http://localhost:8383/api/test').then(response => response.text())
-        var result = await fetch('http://localhost:8383/api/getVehicle').then( response => response.json())
+		//개발환경에서 package.json에 proxy설정
+        //var result = await fetch('/api/test').then(response => response.text())
+		var result = await fetch(`/api/getVehicle`).then( response => response.json())
 
         setRiders(result) //데이터변경
         setLoading(true) //애니메이션 변경
 
       } catch(e) {
-        console.log(e, '서버에 데이터 수신에 문제가 있습니다. 연결을 재시도 합니다.');
+        console.log(e, `서버에 데이터 수신에 문제가 있습니다. 연결을 재시도 합니다.`);
         setLoading(true) //애니메이션 변경
       }
       
