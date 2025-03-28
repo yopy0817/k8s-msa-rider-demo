@@ -2,7 +2,9 @@ package com.coding404.gateway.service;
 
 import com.coding404.gateway.command.VehicleDTO;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -18,4 +20,7 @@ public interface PositionTrackingApiCall {
     @GetMapping("/getVehicle")
     List<VehicleDTO> getVehicle();
 
+    //v2
+    @GetMapping("/getVehicle/{name}")
+    List<Object[]> getVehicleOne(@PathVariable("name") String name);
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,13 +26,15 @@ public class PositionServiceImpl implements PositionService {
         //List<Vehicle> result = list.stream().map( item -> item.convertEntity() ).collect(Collectors.toList());
         //positionRepository.saveAll(result);
 
-        //서버 재시작시 데이터가 지워지므로 data.sql 생성
-        positionRepository.updatePosition(dto.convertEntity());
+        //v1. 서버 재시작시 데이터가 지워지므로 data.sql 생성
+        //positionRepository.updatePosition(dto.convertEntity());
 
+        //v2. postgres데이터베이스 연결
+        positionRepository.save(dto.convertEntity());
     }
-
-    @Override
-    public List<VehicleDTO> getVehicle() {
-        return positionRepository.getVehicle();
-    }
+//    v1
+//    @Override
+//    public List<VehicleDTO> getVehicle() {
+//        return positionRepository.getVehicle();
+//    }
 }

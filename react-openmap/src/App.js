@@ -1,4 +1,4 @@
-import { MapContainer, Marker, Popup, TileLayer} from 'react-leaflet'
+import { MapContainer, Marker, Polyline, Popup, TileLayer} from 'react-leaflet'
 
 import './App.css';
 import { useEffect, useRef, useState } from 'react';
@@ -30,6 +30,9 @@ function App() {
 
   const position = [37.5642135, 127.0016985]; //중심좌표
   const [riders, setRiders] = useState([]) //데이터
+  const [polylineCoords, setPolylineCoords] = useState([]); //v2.라이더 이동경로 데이터
+  const [polylineSelectedId, setPolylineSelectedId] = useState(null); //현재 선택되어 있는 아이디
+
   //step.5 - 리액트 로티 로딩기능
   //npm install lottie-react
   //로티 파일 다운 -> anim폴더에 추가
@@ -40,10 +43,16 @@ function App() {
   //step.7 - 팝업창 제어하기 Popup에 ref={(tag) => popupRef.current[index] = tag }
   const popupRef = useRef([]); 
   //step.6 ~ 7
-  const moveMap = (value, index) => {
+  const moveMap = async (value, index) => {
     //map.setView([value.lat, value.lng], 12)
-    map.flyTo([value.lat, value.lng], 14) 
+    map.flyTo([value.lat, value.lng], 17) 
     popupRef.current[index].openOn(); //팝업창 띄우기
+
+    //v2. step.8 - 마커 클릭시 라이더 데이터 가져오기, 현재 선택한 라이더 정보저장
+    var result = await fetch(`/api/getVehicle/${value.name}`).then( (response) => response.json()) 
+    setPolylineCoords(result); 
+    setPolylineSelectedId(value.name);
+
   }
   //step.1 - 맵 데이터 가져오기
   useEffect( () => {
@@ -51,13 +60,12 @@ function App() {
     const mapInterval = window.setInterval( async () => {
      
       try {
-		//개발환경에서 package.json에 proxy설정
+		    //개발환경에서 package.json에 proxy설정
         //var result = await fetch('/api/test').then(response => response.text())
-		var result = await fetch(`/api/getVehicle`).then( response => response.json())
+		    var result = await fetch(`/api/getVehicle`).then( response => response.json())
 
         setRiders(result) //데이터변경
         setLoading(true) //애니메이션 변경
-
       } catch(e) {
         console.log(e, `서버에 데이터 수신에 문제가 있습니다. 연결을 재시도 합니다.`);
         setLoading(true) //애니메이션 변경
@@ -70,6 +78,29 @@ function App() {
     }
 
   }, []); //처음한번만 실행, 이후 5초 간격 주기적으로 실행
+
+
+  //v2. step.8 라이더스 데이터가 도착하면, 유저가 마커를 선택하고 있을때 화면동기화
+  useEffect( () => {
+    try {
+      if(polylineSelectedId) {
+        const selectedObj = riders.find( item => item.name == polylineSelectedId);
+  
+        const addArr = [selectedObj.lat, selectedObj.lng]; //라이더스 데이터에서 선택된마커를 찾음
+        const lastArr = polylineCoords[polylineCoords.length - 1]; //polly라인 마지막데이터
+  
+        //기존 poly의 마지막요소와, 현재 선택된 polylineSelectedId가 같지 않으면 화면 동기화
+        if(addArr.toString() != lastArr.toString()) {
+          const newArr = [...polylineCoords, addArr];
+          setPolylineCoords(newArr)
+        }     
+      }
+    } catch(e) {
+      console.log(e, '라이더스에 데이터가 부정확 합니다');
+    }
+
+  }, [riders]); 
+
 
   //step.2 - 라이더 리스트
   const riderList = riders.map( (value, index) => 
@@ -87,19 +118,33 @@ function App() {
   //keepInView(팝업이 지도 밖으로 벗어나지 않도록 지도를 이동시키는 옵션)
   //마커가 화면에서 벗어나면, 마커를 지도에 띄우려고 자동이동하는데, 막는 속성이 autoPan={false} keepInView={false}
   const riderMackerList = riders.map( (value, index) =>
-    <Marker position={[value.lat, value.lng]} key={index} >
-      <Popup ref={(tag) => popupRef.current[index] = tag } autoPan={false} keepInView={false}>
+    <Marker 
+      position={[value.lat, value.lng]} 
+      key={index} 
+      eventHandlers={{
+        click: () => moveMap(value, index)
+      }}
+      >
+      <Popup ref={(tag) => popupRef.current[index] = tag } autoPan={false} keepInView={false} >
         {value.name}<br/>
         {value.lat} {value.lng}
       </Popup>
     </Marker>
   )
 
+  //v2. 마커 옵션
+  const polylineOptions = {
+    color: "rgba(0, 0, 255, 0.6)", // 노란색 형광펜 느낌 (RGB + 투명도)
+    weight: 9, // 선의 두께
+    lineCap: "round", // 끝을 둥글게
+    lineJoin: "round", // 선 연결부 둥글게
+  };
+
   return (
     <div className="App">
 
       <header className='header'>
-        Coding404 라이더 관제 시스템 
+        Coding404 라이더 관제 시스템
       </header>
 
 
@@ -150,6 +195,10 @@ function App() {
             </Marker>
             */}
             {riderMackerList}
+            
+            {/* v2.<Polyline positions={[좌표]} color="blue" pathOptions={polylineOptions} /> */}
+            {/* v2.선을 표시 (좌표 데이터가 있을 때만) */}
+            {polylineCoords.length > 0 && <Polyline positions={polylineCoords} color="blue" pathOptions={polylineOptions}/>}
 
           </MapContainer>
           }

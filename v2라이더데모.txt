@@ -1,0 +1,16 @@
+v2에서 변경된 파일(도커이미지 v2로 생성)
+modified:   APIGateway/src/main/java/com/coding404/gateway/controller/APIGatewayController.java
+modified:   APIGateway/src/main/java/com/coding404/gateway/service/PositionTrackingApiCall.java
+modified:   PositionTracker/build.gradle
+modified:   PositionTracker/src/main/java/com/coding404/tracker/component/PositionTracker.java
+modified:   PositionTracker/src/main/java/com/coding404/tracker/controller/PositionController.java
+modified:   PositionTracker/src/main/java/com/coding404/tracker/entity/Vehicle.java
+modified:   PositionTracker/src/main/java/com/coding404/tracker/entity/VehicleDTO.java
+modified:   PositionTracker/src/main/java/com/coding404/tracker/repository/PositionRepository.java
+modified:   PositionTracker/src/main/java/com/coding404/tracker/service/PositionService.java
+modified:   PositionTracker/src/main/java/com/coding404/tracker/service/PositionServiceImpl.java
+modified:   PositionTracker/src/main/resources/application-production-microservice.properties
+modified:   PositionTracker/src/main/resources/application.properties
+modified:   react-openmap/src/App.js
+
+

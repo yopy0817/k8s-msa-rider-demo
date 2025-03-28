@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 public class VehicleDTO {
 
+    private String id; //v2
     private String name;
     private BigDecimal lat;
     private BigDecimal lng;
@@ -21,7 +23,7 @@ public class VehicleDTO {
 
     //엔티티로 변경함
     public Vehicle convertEntity() {
-        return new Vehicle(name, lat, lng, date);
+        return new Vehicle(id, name, lat, lng, date);
     }
 
 }

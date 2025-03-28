@@ -30,11 +30,14 @@ public class PositionTracker {
         
         //레빗큐에서 넘어온 데이터 DTO로 받음
         VehicleDTO dto = VehicleDTO.builder()
+
                 .name( map.get("vehicle"))
                 .lat( new BigDecimal(map.get("lat") ))
                 .lng( new BigDecimal(map.get("lng") ))
                 .date(LocalDateTime.parse(map.get("date") ))
                 .build();
+
+
 
         positionService.updatePosition(dto);
     }

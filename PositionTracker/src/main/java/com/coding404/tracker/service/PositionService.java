@@ -11,5 +11,5 @@ import java.util.List;
 public interface PositionService {
 
     void updatePosition(VehicleDTO dto);
-    List<VehicleDTO> getVehicle();
+    //List<VehicleDTO> getVehicle();
 }

@@ -58,7 +58,7 @@ public class Rider implements Callable<Object> {
                 if(index == 0) forward = true;
             }
             //딜레이
-            delay( Math.random() * 10000 + 10000 ); //10~20초 사이로 딜레이
+            delay( Math.random() * 20000 + 10000 ); //10~30초 사이로 딜레이
         }
     }
 
