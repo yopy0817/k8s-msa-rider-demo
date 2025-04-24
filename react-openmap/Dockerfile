@@ -1,6 +1,9 @@
 # Step 1: Nginx의 최신 Alpine 기반 이미지를 사용
 FROM nginx:alpine
 
+# Step 1-1: curl wget설치
+RUN apk add --no-cache curl wget
+
 # Step 2: Nginx 기본 설정 파일 삭제
 RUN rm -rf /etc/nginx/conf.d/default.conf
 
