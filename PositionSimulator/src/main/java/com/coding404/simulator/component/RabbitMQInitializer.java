@@ -10,10 +10,12 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * 2025-04-22 사용하지 않음 -> 큐 생성시 자동 생성되도록 변경
+ */
 @Slf4j
-@Component
+//@Component
 public class RabbitMQInitializer {
-
     @Value("${position.queue}")
     private String queueName; //전달할 큐이름
     @Value("${spring.rabbitmq.host}")
@@ -25,7 +27,7 @@ public class RabbitMQInitializer {
     @Value("${spring.rabbitmq.password}")
     private String password;
 
-    @PostConstruct //이 클래스가 빈으로 등록될때  실행됨
+    //@PostConstruct //이 클래스가 빈으로 등록될때  실행됨
     public void init() {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(host);
