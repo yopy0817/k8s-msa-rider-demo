@@ -143,24 +143,9 @@ function App() {
   return (
     <div className="App">
 
-      <header className='header'>
-        Coding404 라이더 관제 시스템
-      </header>
-
 
       <section className='gis-wrap'>
-        <ul className='item-left'>
-          {/* 
-          <li className='rider-item'>
-            <a href="#">
-              <p className='rider-name'>라이더명</p>
-              <p className='rider-time'>2024-11-11 22:03:01</p>
-              <p className='rider-coords'>위도 경도</p>
-            </a>
-          </li>
-          */}
-          {riderList}
-        </ul>
+
 
         <div className='item-right' style={{position: 'relative'}}>
           {/* 로티애니메이션 로딩*/}
